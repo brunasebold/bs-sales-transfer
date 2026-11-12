@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="BS_SalesTransfer::transfer"
+             title="Sales Transfer"
+             translate="title"
+             module="BS_SalesTransfer"
+             sortOrder="110"
+             parent="Magento_Sales::sales"
+             action="bs_salestransfer/transfer/index"
+             resource="BS_SalesTransfer::transfer"/>
+    </menu>
+</config>

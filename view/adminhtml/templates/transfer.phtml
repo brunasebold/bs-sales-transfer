@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * @var \BS\SalesTransfer\Block\Adminhtml\Transfer $block
+ */
+$both = $block->canExport() && $block->canImport();
+?>
+<div class="bs-transfer">
+    <div class="bs-transfer-intro">
+        <p><?= $block->escapeHtml(__(
+            'This screen moves sales history from one Magento to another: orders, invoices, shipments and credit memos. Install this module on both stores and keep the same store codes.'
+        )) ?></p>
+        <ul>
+            <li><?= $block->escapeHtml(__('The order is saved as history only. No email is sent, the payment is not charged again, and stock is not changed.')) ?></li>
+            <li><?= $block->escapeHtml(__('The customer is found by email on the same website. Each item is found by SKU. If the customer or the product does not exist here, the name and address stay on the order and the link is left empty.')) ?></li>
+            <li><?= $block->escapeHtml(__('A file uploaded on this screen can be up to 256 MB. For a larger volume, use the terminal: bin/magento bs:sales:export and bin/magento bs:sales:import.')) ?></li>
+        </ul>
+    </div>
+
+    <div class="bs-transfer-grid<?= $both ? '' : ' bs-transfer-grid-single' ?>">
+        <?php if ($block->canExport()): ?>
+        <form class="bs-transfer-card" action="<?= $block->escapeUrl($block->getExportUrl()) ?>" method="post">
+            <input type="hidden" name="form_key" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+            <div class="bs-transfer-card-head">
+                <h2><?= $block->escapeHtml(__('Export')) ?></h2>
+                <p><?= $block->escapeHtml(__('Write a .jsonl file from this store.')) ?></p>
+            </div>
+            <div class="bs-transfer-card-body">
+                <div class="bs-transfer-field">
+                    <label for="sales_transfer_stores"><?= $block->escapeHtml(__('Stores')) ?></label>
+                    <select class="admin__control-multiselect" id="sales_transfer_stores" name="store_ids[]" multiple="multiple" size="5">
+                        <?php foreach ($block->getStores() as $store): ?>
+                            <option value="<?= (int) $store['id'] ?>">
+                                <?= $block->escapeHtml($store['name'] . ' (' . $store['code'] . ')') ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <p class="bs-transfer-note">
+                        <?= $block->escapeHtml(__('With nothing selected, every store is exported. Dates use the timezone from the store configuration.')) ?>
+                    </p>
+                </div>
+                <div class="bs-transfer-dates">
+                    <div class="bs-transfer-field">
+                        <label for="sales_transfer_from"><?= $block->escapeHtml(__('Created from')) ?></label>
+                        <input class="admin__control-text" type="date" id="sales_transfer_from" name="created_from"/>
+                    </div>
+                    <div class="bs-transfer-field">
+                        <label for="sales_transfer_to"><?= $block->escapeHtml(__('Created until')) ?></label>
+                        <input class="admin__control-text" type="date" id="sales_transfer_to" name="created_to"/>
+                    </div>
+                </div>
+            </div>
+            <div class="bs-transfer-card-foot">
+                <button type="submit" class="action-default scalable primary">
+                    <span><?= $block->escapeHtml(__('Export')) ?></span>
+                </button>
+            </div>
+        </form>
+        <?php endif; ?>
+
+        <?php if ($block->canImport()): ?>
+        <form id="bs-sales-import-form" class="bs-transfer-card" action="<?= $block->escapeUrl($block->getImportUrl()) ?>" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="form_key" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+            <div class="bs-transfer-card-head">
+                <h2><?= $block->escapeHtml(__('Import')) ?></h2>
+                <p><?= $block->escapeHtml(__('Load a .jsonl file into this store.')) ?></p>
+            </div>
+            <div class="bs-transfer-card-body">
+                <div class="bs-transfer-field">
+                    <label for="sales_transfer_file"><?= $block->escapeHtml(__('.jsonl file')) ?></label>
+                    <input class="admin__control-file" type="file" id="sales_transfer_file" name="import_file" accept=".jsonl,application/x-ndjson,application/jsonl" required="required"/>
+                    <p class="bs-transfer-note"><?= $block->escapeHtml(__('Up to 256 MB. Use the CLI for a larger file.')) ?></p>
+                </div>
+                <fieldset class="bs-transfer-field">
+                    <legend><?= $block->escapeHtml(__('When the order already exists')) ?></legend>
+                    <label class="bs-transfer-choice">
+                        <input type="radio" name="behavior" value="skip" checked="checked"/>
+                        <span class="bs-transfer-choice-copy">
+                            <strong><?= $block->escapeHtml(__('Skip')) ?></strong>
+                            <span><?= $block->escapeHtml(__('Leave the existing order unchanged.')) ?></span>
+                        </span>
+                    </label>
+                    <label class="bs-transfer-choice">
+                        <input type="radio" name="behavior" value="replace"/>
+                        <span class="bs-transfer-choice-copy">
+                            <strong><?= $block->escapeHtml(__('Replace the order on this store')) ?></strong>
+                            <span><?= $block->escapeHtml(__('Delete the local order and save the one from the file.')) ?></span>
+                        </span>
+                    </label>
+                    <p class="bs-transfer-note"><?= $block->escapeHtml(__('Orders are matched by order number and store code.')) ?></p>
+                </fieldset>
+                <div class="bs-transfer-progress" hidden="hidden">
+                    <div class="bs-transfer-progress-track" aria-hidden="true">
+                        <div class="bs-transfer-progress-bar"></div>
+                    </div>
+                    <p class="bs-transfer-progress-label" role="status"></p>
+                </div>
+                <div class="bs-transfer-result" hidden="hidden" role="status"></div>
+            </div>
+            <div class="bs-transfer-card-foot">
+                <button type="submit" class="action-default scalable primary">
+                    <span><?= $block->escapeHtml(__('Import')) ?></span>
+                </button>
+            </div>
+        </form>
+        <script type="text/x-magento-init">
+            <?= /* @noEscape */ $block->getImportInitJson() ?>
+        </script>
+        <?php endif; ?>
+    </div>
+</div>

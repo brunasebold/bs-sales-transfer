@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset name="BS_SalesTransfer">
+    <description>PSR-12 for the Sales Transfer module.</description>
+    <arg name="extensions" value="php"/>
+    <file>Block</file>
+    <file>Console</file>
+    <file>Controller</file>
+    <file>Model</file>
+    <file>Plugin</file>
+    <file>Test</file>
+    <file>registration.php</file>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+        <!-- Magento admin controllers must implement _isAllowed(). -->
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+    </rule>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+    </rule>
+</ruleset>
