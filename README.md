@@ -1,8 +1,8 @@
 # BS_SalesTransfer
 
-Copia pedidos, faturas, envios e memorandos de crédito de um Magento para outro, sem dump da base. O pedido entra como histórico: não dispara e-mail, não chama o gateway de pagamento e não mexe no estoque.
+Copy Magento orders, invoices, shipments and credit memos between installations without sending email, charging a payment or changing stock.
 
-O restante deste arquivo está em inglês, no formato de um módulo público.
+![Sales Transfer admin screen. The labels are the Brazilian Portuguese translation.](docs/admin.png)
 
 ## What it does
 
