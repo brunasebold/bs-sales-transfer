@@ -24,11 +24,10 @@ The file contains personal data (name, email, address, payment metadata). Treat 
 
 ## Install
 
-Copy this directory to `app/code/BS/SalesTransfer`. To install it with Composer from the Git repository:
+Copy this directory to `app/code/BS/SalesTransfer`, or install it with Composer:
 
 ```bash
-composer config repositories.bs-sales-transfer vcs https://github.com/brunasebold/bs-sales-transfer.git
-composer require bs/module-sales-transfer
+composer require brunasebold/module-sales-transfer
 ```
 
 Then enable it:

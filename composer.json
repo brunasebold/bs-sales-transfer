@@ -1,9 +1,19 @@
 {
-    "name": "bs/module-sales-transfer",
+    "name": "brunasebold/module-sales-transfer",
     "description": "Copy Magento orders, invoices, shipments and credit memos between installations without sending email, charging a payment or changing stock.",
     "type": "magento2-module",
     "license": "MIT",
-    "version": "1.0.0",
+    "keywords": [
+        "magento",
+        "magento2",
+        "sales",
+        "orders"
+    ],
+    "homepage": "https://github.com/brunasebold/bs-sales-transfer",
+    "support": {
+        "issues": "https://github.com/brunasebold/bs-sales-transfer/issues",
+        "source": "https://github.com/brunasebold/bs-sales-transfer"
+    },
     "authors": [
         {
             "name": "Bruna Sebold",
